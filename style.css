@@ -7,13 +7,58 @@
 html, body {
     width: 100%;
     min-height: 100vh;
-    background-color: #f6f2ec; /* 溫暖柔和的亞麻奶茶色底 */
+    background-color: #f6f2ec;
     font-family: 'LXGW WenKai TC', cursive, serif;
     color: #383331;
     overflow-x: hidden;
 }
 
+/* === 回憶碎片背景 === */
+.memories-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* 絕對不阻礙滑鼠點擊或手指滑動 */
+    z-index: 1; /* 位於背景之上，信紙之下 */
+    overflow: hidden;
+}
+
+.memory-fragment {
+    position: absolute;
+    top: -200px;
+    width: 140px;
+    height: auto;
+    border: 8px solid #ffffff;
+    border-bottom: 25px solid #ffffff; /* 仿拍立得的白邊底 */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 2px;
+    opacity: 0;
+    animation: drift linear forwards;
+    filter: sepia(0.2) contrast(0.9); /* 加上一點點復古溫暖濾鏡 */
+}
+
+/* 碎片飄落與旋轉動畫 */
+@keyframes drift {
+    0% {
+        transform: translateY(0) rotate(var(--start-rot));
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.75; /* 微透明，不搶戲 */
+    }
+    85% {
+        opacity: 0.75;
+    }
+    100% {
+        transform: translateY(115vh) rotate(var(--end-rot));
+        opacity: 0;
+    }
+}
+
 .stage {
+    position: relative;
     width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
@@ -21,6 +66,7 @@ html, body {
     justify-content: center;
     align-items: center;
     padding: 20px 12px;
+    z-index: 10; /* 確保信封和信紙在最高層，蓋住飄落的照片 */
 }
 
 /* === 復古質感信封設計 === */
@@ -41,7 +87,6 @@ html, body {
     box-shadow: 0 15px 35px rgba(60, 48, 38, 0.12);
 }
 
-/* 信封上蓋 */
 .flap {
     position: absolute;
     top: 0;
@@ -56,7 +101,6 @@ html, body {
     z-index: 3;
 }
 
-/* 信封口口袋邊緣 */
 .pocket {
     position: absolute;
     bottom: 0;
@@ -70,7 +114,6 @@ html, body {
     z-index: 2;
 }
 
-/* 酒紅金邊封蠟章 */
 .wax-seal {
     position: absolute;
     top: 80px;
@@ -111,7 +154,6 @@ html, body {
     user-select: none;
 }
 
-/* 開信機制動畫 */
 .open .flap {
     transform: rotateX(180deg);
     z-index: 1;
@@ -160,7 +202,6 @@ html, body {
     font-weight: bold;
 }
 
-/* 拍立得裝飾與迴紋針 */
 .polaroid-frame {
     position: relative;
     width: 240px;
@@ -190,7 +231,6 @@ html, body {
     display: block;
 }
 
-/* 正文排版 (嚴格防止跑版) */
 .letter-body p {
     font-size: 18px;
     line-height: 1.8;
@@ -236,5 +276,11 @@ html, body {
     .polaroid-frame {
         width: 100%;
         max-width: 210px;
+    }
+    /* 手機螢幕較小，記憶碎片也縮小 */
+    .memory-fragment {
+        width: 90px;
+        border-width: 5px;
+        border-bottom-width: 16px;
     }
 }
