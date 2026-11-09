@@ -4,17 +4,19 @@
     padding: 0;
 }
 
-body {
-    /* 套用手寫字體 */
-    font-family: 'LXGW WenKai TC', cursive, sans-serif;
-    background-color: #fceceb; /* 溫暖的淺粉底色 */
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background: #f4eae1;
     color: #4a4a4a;
-    overflow: hidden; /* 防止遊戲卷軸捲動 */
+    font-family: 'LXGW WenKai TC', cursive, sans-serif;
+    overflow-x: hidden; /* 全局禁止橫向滾動 */
 }
 
 .screen {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh; /* 相容手機端動態高度 */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,117 +24,214 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    transition: opacity 1s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .hidden {
     opacity: 0;
     pointer-events: none;
-    z-index: -1;
+    transform: translateY(20px);
 }
 
-/* === 遊戲區塊 === */
-.game-header {
-    text-align: center;
-    margin-bottom: 20px;
-    z-index: 10;
-}
-.game-header h2 { font-size: 24px; color: #d9534f; margin-bottom: 5px; }
-.game-header p { font-size: 16px; color: #666; margin-bottom: 10px; }
-#score-board { font-size: 20px; font-weight: bold; }
-
-#game-area {
-    width: 100%;
-    max-width: 500px;
-    height: 60vh;
+/* === 實體質感禮物盒 === */
+.gift-container {
     position: relative;
-    background: rgba(255,255,255,0.5);
-    border: 2px dashed #d9534f;
-    border-radius: 15px;
-    overflow: hidden;
-    touch-action: none; /* 防止手機滑動干擾 */
+    width: 160px;
+    height: 160px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-#basket {
+.gift-container:hover {
+    transform: scale(1.05);
+}
+
+.gift-lid {
     position: absolute;
-    bottom: 10px;
+    top: 0;
+    left: -10px;
+    width: 180px;
+    height: 40px;
+    background: #e74c3c;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 2;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+}
+
+.gift-box-body {
+    position: absolute;
+    bottom: 0;
+    width: 160px;
+    height: 130px;
+    background: #c0392b;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+.ribbon-vertical {
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 50px;
-    pointer-events: none;
+    width: 28px;
+    height: 100%;
+    background: #f1c40f;
 }
 
-.item {
+.ribbon-horizontal {
     position: absolute;
-    font-size: 35px;
-    user-select: none;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 28px;
+    background: #f1c40f;
 }
 
-/* === 禮物區塊 === */
-#gift-screen h2 {
-    color: #d9534f;
-    margin-bottom: 30px;
+.bow {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 26px;
+    background: #f1c40f;
+    border-radius: 44px 44px 0 0;
 }
-#gift-box {
-    font-size: 120px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    animation: float 2s infinite ease-in-out;
-}
-#gift-box:hover {
-    transform: scale(1.1) rotate(5deg);
-}
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-.shake {
-    animation: shake 0.5s;
-}
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    20% { transform: translate(-3px, 0px) rotate(10deg); }
-    40% { transform: translate(1px, -1px) rotate(-10deg); }
-    60% { transform: translate(-3px, 1px) rotate(10deg); }
-    80% { transform: translate(1px, -1px) rotate(-10deg); }
-    100% { transform: translate(1px, 1px) rotate(0deg); }
+.bow::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: -18px;
+    width: 80px;
+    height: 14px;
+    background: #f39c12;
+    border-radius: 10px;
 }
 
-/* === 手寫信紙區塊 === */
+.click-hint {
+    margin-top: 40px;
+    font-size: 18px;
+    color: #7f8c8d;
+    letter-spacing: 1.5px;
+    animation: pulse 2s infinite ease-in-out;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-5px); }
+}
+
+.open .gift-lid {
+    transform: translateY(-100px) rotate(-15deg);
+    opacity: 0;
+}
+
+/* === 手寫信紙區塊（手機適應重點） === */
 #letter-screen {
-    background-color: #f7f1e3;
+    justify-content: flex-start;
     overflow-y: auto;
-    padding: 40px 20px;
-    align-items: flex-start;
+    -webkit-overflow-scrolling: touch; /* 提升 iOS 觸控滑動順暢度 */
+    padding: 20px 12px 60px 12px;
 }
 
 .letter-paper {
-    background: #fffdf5; /* 米黃色信紙 */
+    background: #fffdf7;
+    width: 100%;
     max-width: 650px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 5px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-    background-size: 100% 32px; /* 創造信紙橫線質感 */
+    margin: 20px auto;
+    padding: 35px 25px;
+    border-radius: 6px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-size: 100% 32px;
     line-height: 32px;
+    box-sizing: border-box;
 }
 
 .letter-paper p {
-    font-size: 19px;
-    color: #333;
+    font-size: 18.5px;
+    color: #2c3e50;
     margin-bottom: 16px;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    /* 強制文字在容器內自動折行，絕不超出視窗 */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.letter-paper .greeting {
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom: 2px dashed rgba(231, 76, 60, 0.4);
+    display: inline-block;
+    padding-bottom: 2px;
+    margin-bottom: 20px;
+}
+
+/* === 拍立得照片區塊 === */
+.photo-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin: 20px auto 30px auto;
+    transform: rotate(-1.5deg);
+}
+
+.card-photo {
+    width: 100%;
+    height: auto;
+    border: 10px solid #ffffff;
+    border-bottom: 30px solid #ffffff;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    border-radius: 2px;
+    display: block;
+}
+
+.photo-container::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 90px;
+    height: 24px;
+    background-color: rgba(243, 156, 18, 0.55);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    z-index: 10;
 }
 
 .letter-paper .ps {
     font-size: 16px;
-    color: #777;
+    color: #7f8c8d;
+    margin-top: 30px;
 }
 
 .signature {
-    margin-top: 50px;
+    margin-top: 40px;
     text-align: right;
     font-weight: bold;
+}
+
+/* === 手機小螢幕微調 (Media Queries) === */
+@media (max-width: 480px) {
+    .letter-paper {
+        padding: 25px 16px;
+        background-size: 100% 30px;
+        line-height: 30px;
+    }
+    .letter-paper p {
+        font-size: 17px;
+        margin-bottom: 14px;
+    }
+    .letter-paper .greeting {
+        font-size: 20px;
+    }
+    .card-photo {
+        border-width: 8px;
+        border-bottom-width: 25px;
+    }
+    .click-hint {
+        font-size: 16px;
+    }
 }

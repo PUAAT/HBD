@@ -2,41 +2,37 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy 19th Birthday, Catalina!</title>
-    <!-- 引入高質感的霞鶩文楷手寫字體，完美支援繁簡中文 -->
-    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+    <!-- 引入霞鶩文楷手寫字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 第一階段：接回憶小遊戲 -->
-    <div id="game-screen" class="screen">
-        <div class="game-header">
-            <h2>收集我們的 19 個專屬回憶 🎂</h2>
-            <p>移動籃子接住回憶 (溫哥華楓葉🍁、吉伊🐹、零食🍫、聊天💬)</p>
-            <div id="score-board">回憶收集度: <span id="score">0</span> / 19</div>
+    <!-- 第一幕：實體質感禮物盒 -->
+    <div id="gift-screen" class="screen">
+        <div class="gift-container" id="gift-box">
+            <div class="gift-lid">
+                <div class="ribbon-vertical"></div>
+                <div class="bow"></div>
+            </div>
+            <div class="gift-box-body">
+                <div class="ribbon-vertical"></div>
+                <div class="ribbon-horizontal"></div>
+            </div>
         </div>
-        <div id="game-area">
-            <div id="basket">🧺</div>
-        </div>
+        <p class="click-hint">點擊禮物盒拆開驚喜 🎁</p>
     </div>
 
-    <!-- 第二階段：拆禮物 -->
-    <div id="gift-screen" class="screen hidden">
-        <h2>回憶收集完成！這是一份給妳的驚喜...</h2>
-        <p>（點擊拆開禮物）</p>
-        <div id="gift-box">🎁</div>
-    </div>
-
-    <!-- 第三階段：手寫信件 -->
+    <!-- 第二幕：手寫卡片與照片 -->
     <div id="letter-screen" class="screen hidden">
         <div class="letter-paper">
             <p class="greeting">To Catalina</p>
             
-            <!-- 這裡改成 GIF 動圖檔案：celebration.gif -->
+            <!-- 手作拍立得相片（請確認檔名為 celebration.gif） -->
             <div class="photo-container">
-                <img src="celebration.gif" alt="我們專屬的慶祝動圖" class="card-photo">
+                <img src="celebration.gif" alt="慶祝動圖" class="card-photo">
             </div>
 
             <p>一轉眼妳的生日就到了啊！雖然沒辦法在Van幫妳慶生，但還是寫了這個生日小文給妳，首先當然要祝妳19歲生日快樂，如果我沒有記錯的話，沒想到也跟妳認識已經三個月也快四個月了，希望我們兩可以持續當Bestie 和保持聯絡，這陣子我們時在聊了好多好多的天，那對話紀錄看起來是滑不到頂端了哈哈哈，偶爾都是在互相抱怨生活又或是家裡，也有可能在聊一些特別傻的reels又或是一些愛情啥的，跟妳認識到現在還是覺得妳是特別棒的朋友。</p>
