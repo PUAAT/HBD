@@ -6,232 +6,235 @@
 
 html, body {
     width: 100%;
-    min-height: 100%;
-    background: #f4eae1;
-    color: #4a4a4a;
-    font-family: 'LXGW WenKai TC', cursive, sans-serif;
-    overflow-x: hidden; /* 全局禁止橫向滾動 */
+    min-height: 100vh;
+    background-color: #f6f2ec; /* 溫暖柔和的亞麻奶茶色底 */
+    font-family: 'LXGW WenKai TC', cursive, serif;
+    color: #383331;
+    overflow-x: hidden;
 }
 
-.screen {
+.stage {
     width: 100%;
     min-height: 100vh;
-    min-height: 100dvh; /* 相容手機端動態高度 */
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 12px;
+}
+
+/* === 復古質感信封設計 === */
+.envelope-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    perspective: 1000px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.envelope {
+    position: relative;
+    width: 290px;
+    height: 190px;
+    background: #e3d7c5;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(60, 48, 38, 0.12);
+}
+
+/* 信封上蓋 */
+.flap {
     position: absolute;
     top: 0;
     left: 0;
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    width: 0;
+    height: 0;
+    border-left: 145px solid transparent;
+    border-right: 145px solid transparent;
+    border-top: 105px solid #d9cbba;
+    transform-origin: top;
+    transition: transform 0.6s ease 0.2s, z-index 0.2s;
+    z-index: 3;
+}
+
+/* 信封口口袋邊緣 */
+.pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 145px solid #d0c1ad;
+    border-right: 145px solid #d0c1ad;
+    border-bottom: 100px solid #c7b6a1;
+    border-radius: 0 0 4px 4px;
+    z-index: 2;
+}
+
+/* 酒紅金邊封蠟章 */
+.wax-seal {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 52px;
+    height: 52px;
+    background: radial-gradient(circle at 35% 35%, #ad2d2d, #781b1b);
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25), inset 0 0 0 2px rgba(224, 186, 116, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 4;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wax-seal:hover {
+    transform: translateX(-50%) scale(1.06);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(224, 186, 116, 0.8);
+}
+
+.seal-text {
+    color: #f4e8d1;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-family: serif;
+    user-select: none;
+}
+
+.hint-text {
+    margin-top: 28px;
+    font-size: 15px;
+    color: #8c827a;
+    letter-spacing: 2px;
+    user-select: none;
+}
+
+/* 開信機制動畫 */
+.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.open .wax-seal {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* === 手寫信紙卡片 === */
+.letter-card {
+    width: 100%;
+    max-width: 620px;
+    transition: opacity 1s ease 0.3s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
 }
 
 .hidden {
     opacity: 0;
     pointer-events: none;
-    transform: translateY(20px);
+    transform: translateY(30px);
+    display: none;
 }
 
-/* === 實體質感禮物盒 === */
-.gift-container {
+.paper-texture {
+    background: #faf7f0;
+    padding: 40px 30px;
+    border-radius: 2px;
+    box-shadow: 0 12px 40px rgba(54, 43, 34, 0.07);
+    border: 1px solid #efe8dc;
     position: relative;
-    width: 160px;
-    height: 160px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
 }
 
-.gift-container:hover {
-    transform: scale(1.05);
+.date-stamp {
+    font-size: 14px;
+    color: #9c9188;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
 }
 
-.gift-lid {
-    position: absolute;
-    top: 0;
-    left: -10px;
-    width: 180px;
-    height: 40px;
-    background: #e74c3c;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 2;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+.greeting {
+    font-size: 24px;
+    color: #2b2523;
+    margin-bottom: 24px;
+    font-weight: bold;
 }
 
-.gift-box-body {
-    position: absolute;
-    bottom: 0;
-    width: 160px;
-    height: 130px;
-    background: #c0392b;
-    border-radius: 0 0 6px 6px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+/* 拍立得裝飾與迴紋針 */
+.polaroid-frame {
+    position: relative;
+    width: 240px;
+    margin: 10px auto 30px auto;
+    padding: 10px 10px 24px 10px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transform: rotate(-1.2deg);
 }
 
-.ribbon-vertical {
+.paperclip {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 28px;
-    height: 100%;
-    background: #f1c40f;
-}
-
-.ribbon-horizontal {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: 28px;
-    background: #f1c40f;
-}
-
-.bow {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 44px;
-    height: 26px;
-    background: #f1c40f;
-    border-radius: 44px 44px 0 0;
-}
-.bow::after {
-    content: '';
-    position: absolute;
-    top: 5px;
-    left: -18px;
-    width: 80px;
-    height: 14px;
-    background: #f39c12;
+    top: -12px;
+    right: 18px;
+    width: 12px;
+    height: 32px;
+    border: 2px solid #8e9499;
     border-radius: 10px;
+    z-index: 5;
+    background: transparent;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
-.click-hint {
-    margin-top: 40px;
-    font-size: 18px;
-    color: #7f8c8d;
-    letter-spacing: 1.5px;
-    animation: pulse 2s infinite ease-in-out;
-    text-align: center;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-5px); }
-}
-
-.open .gift-lid {
-    transform: translateY(-100px) rotate(-15deg);
-    opacity: 0;
-}
-
-/* === 手寫信紙區塊（手機適應重點） === */
-#letter-screen {
-    justify-content: flex-start;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* 提升 iOS 觸控滑動順暢度 */
-    padding: 20px 12px 60px 12px;
-}
-
-.letter-paper {
-    background: #fffdf7;
+.polaroid-img {
     width: 100%;
-    max-width: 650px;
-    margin: 20px auto;
-    padding: 35px 25px;
-    border-radius: 6px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-    background-size: 100% 32px;
-    line-height: 32px;
-    box-sizing: border-box;
+    height: auto;
+    display: block;
 }
 
-.letter-paper p {
-    font-size: 18.5px;
-    color: #2c3e50;
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-    /* 強制文字在容器內自動折行，絕不超出視窗 */
+/* 正文排版 (嚴格防止跑版) */
+.letter-body p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #3b3533;
+    margin-bottom: 18px;
+    letter-spacing: 0.6px;
     overflow-wrap: break-word;
     word-break: break-word;
     white-space: normal;
 }
 
-.letter-paper .greeting {
-    font-size: 22px;
-    font-weight: bold;
-    border-bottom: 2px dashed rgba(231, 76, 60, 0.4);
-    display: inline-block;
-    padding-bottom: 2px;
-    margin-bottom: 20px;
-}
-
-/* === 拍立得照片區塊 === */
-.photo-container {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
-    margin: 20px auto 30px auto;
-    transform: rotate(-1.5deg);
-}
-
-.card-photo {
-    width: 100%;
-    height: auto;
-    border: 10px solid #ffffff;
-    border-bottom: 30px solid #ffffff;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
-    border-radius: 2px;
-    display: block;
-}
-
-.photo-container::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-3deg);
-    width: 90px;
-    height: 24px;
-    background-color: rgba(243, 156, 18, 0.55);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    z-index: 10;
-}
-
-.letter-paper .ps {
-    font-size: 16px;
-    color: #7f8c8d;
-    margin-top: 30px;
+.letter-body .ps {
+    font-size: 15.5px;
+    color: #8c827b;
+    margin-top: 25px;
 }
 
 .signature {
     margin-top: 40px;
     text-align: right;
-    font-weight: bold;
+    line-height: 1.5;
 }
 
-/* === 手機小螢幕微調 (Media Queries) === */
+.signature .name {
+    font-weight: bold;
+    font-size: 19px;
+    color: #2b2523;
+}
+
+/* === 手機端微調 === */
 @media (max-width: 480px) {
-    .letter-paper {
-        padding: 25px 16px;
-        background-size: 100% 30px;
-        line-height: 30px;
+    .paper-texture {
+        padding: 26px 18px;
     }
-    .letter-paper p {
-        font-size: 17px;
+    .letter-body p {
+        font-size: 16.5px;
+        line-height: 1.75;
         margin-bottom: 14px;
     }
-    .letter-paper .greeting {
-        font-size: 20px;
+    .greeting {
+        font-size: 21px;
     }
-    .card-photo {
-        border-width: 8px;
-        border-bottom-width: 25px;
-    }
-    .click-hint {
-        font-size: 16px;
+    .polaroid-frame {
+        width: 100%;
+        max-width: 210px;
     }
 }

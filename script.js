@@ -1,14 +1,20 @@
-const giftBox = document.getElementById('gift-box');
-const giftScreen = document.getElementById('gift-screen');
-const letterScreen = document.getElementById('letter-screen');
+const waxSeal = document.getElementById('wax-seal');
+const envelope = document.getElementById('envelope');
+const envelopeWrapper = document.getElementById('envelope-wrapper');
+const letterCard = document.getElementById('letter-card');
 
-giftBox.addEventListener('click', () => {
-    // 觸發蓋子飛開動畫
-    giftBox.classList.add('open');
+waxSeal.addEventListener('click', () => {
+    // 1. 觸發信封蓋與封蠟動畫
+    envelope.classList.add('open');
     
-    // 淡出禮物盒，滑出信紙
+    // 2. 信封淡出並流暢展開手寫信
     setTimeout(() => {
-        giftScreen.classList.add('hidden');
-        letterScreen.classList.remove('hidden');
-    }, 600);
+        envelopeWrapper.style.opacity = '0';
+        envelopeWrapper.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+            envelopeWrapper.style.display = 'none';
+            letterCard.classList.remove('hidden');
+        }, 500);
+    }, 700);
 });
