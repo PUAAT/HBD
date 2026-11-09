@@ -1,0 +1,138 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* 套用手寫字體 */
+    font-family: 'LXGW WenKai TC', cursive, sans-serif;
+    background-color: #fceceb; /* 溫暖的淺粉底色 */
+    color: #4a4a4a;
+    overflow: hidden; /* 防止遊戲卷軸捲動 */
+}
+
+.screen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 1s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* === 遊戲區塊 === */
+.game-header {
+    text-align: center;
+    margin-bottom: 20px;
+    z-index: 10;
+}
+.game-header h2 { font-size: 24px; color: #d9534f; margin-bottom: 5px; }
+.game-header p { font-size: 16px; color: #666; margin-bottom: 10px; }
+#score-board { font-size: 20px; font-weight: bold; }
+
+#game-area {
+    width: 100%;
+    max-width: 500px;
+    height: 60vh;
+    position: relative;
+    background: rgba(255,255,255,0.5);
+    border: 2px dashed #d9534f;
+    border-radius: 15px;
+    overflow: hidden;
+    touch-action: none; /* 防止手機滑動干擾 */
+}
+
+#basket {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    pointer-events: none;
+}
+
+.item {
+    position: absolute;
+    font-size: 35px;
+    user-select: none;
+}
+
+/* === 禮物區塊 === */
+#gift-screen h2 {
+    color: #d9534f;
+    margin-bottom: 30px;
+}
+#gift-box {
+    font-size: 120px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    animation: float 2s infinite ease-in-out;
+}
+#gift-box:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+.shake {
+    animation: shake 0.5s;
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    20% { transform: translate(-3px, 0px) rotate(10deg); }
+    40% { transform: translate(1px, -1px) rotate(-10deg); }
+    60% { transform: translate(-3px, 1px) rotate(10deg); }
+    80% { transform: translate(1px, -1px) rotate(-10deg); }
+    100% { transform: translate(1px, 1px) rotate(0deg); }
+}
+
+/* === 手寫信紙區塊 === */
+#letter-screen {
+    background-color: #f7f1e3;
+    overflow-y: auto;
+    padding: 40px 20px;
+    align-items: flex-start;
+}
+
+.letter-paper {
+    background: #fffdf5; /* 米黃色信紙 */
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 100% 32px; /* 創造信紙橫線質感 */
+    line-height: 32px;
+}
+
+.letter-paper p {
+    font-size: 19px;
+    color: #333;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.letter-paper .ps {
+    font-size: 16px;
+    color: #777;
+}
+
+.signature {
+    margin-top: 50px;
+    text-align: right;
+    font-weight: bold;
+}
