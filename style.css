@@ -13,7 +13,7 @@ html, body {
     overflow-x: hidden;
 }
 
-/* === 回憶碎片背景 === */
+/* === 回憶碎片背景 (修改為在最上層、半透明) === */
 .memories-container {
     position: fixed;
     top: 0;
@@ -21,14 +21,14 @@ html, body {
     width: 100vw;
     height: 100vh;
     pointer-events: none; /* 絕對不阻礙滑鼠點擊或手指滑動 */
-    z-index: 1; /* 位於背景之上，信紙之下 */
+    z-index: 999; /* 改成 999，確保飄落在信紙的「最前方」 */
     overflow: hidden;
 }
 
 .memory-fragment {
     position: absolute;
     top: -200px;
-    width: 140px;
+    width: 120px;
     height: auto;
     border: 8px solid #ffffff;
     border-bottom: 25px solid #ffffff; /* 仿拍立得的白邊底 */
@@ -42,14 +42,14 @@ html, body {
 /* 碎片飄落與旋轉動畫 */
 @keyframes drift {
     0% {
-        transform: translateY(0) rotate(var(--start-rot));
+        transform: translateY(-200px) rotate(var(--start-rot));
         opacity: 0;
     }
-    10% {
-        opacity: 0.75; /* 微透明，不搶戲 */
+    15% {
+        opacity: 0.55; /* 調為 0.55 半透明，既能看見照片，也能看透讀底下的字 */
     }
     85% {
-        opacity: 0.75;
+        opacity: 0.55;
     }
     100% {
         transform: translateY(115vh) rotate(var(--end-rot));
@@ -66,7 +66,7 @@ html, body {
     justify-content: center;
     align-items: center;
     padding: 20px 12px;
-    z-index: 10; /* 確保信封和信紙在最高層，蓋住飄落的照片 */
+    z-index: 10;
 }
 
 /* === 復古質感信封設計 === */
@@ -277,10 +277,10 @@ html, body {
         width: 100%;
         max-width: 210px;
     }
-    /* 手機螢幕較小，記憶碎片也縮小 */
+    /* 手機螢幕較小，記憶碎片縮得更小一點，避免遮擋太多文字 */
     .memory-fragment {
-        width: 90px;
-        border-width: 5px;
-        border-bottom-width: 16px;
+        width: 80px;
+        border-width: 4px;
+        border-bottom-width: 14px;
     }
 }
