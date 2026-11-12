@@ -13,48 +13,37 @@ html, body {
     overflow-x: hidden;
 }
 
-/* === 回憶碎片背景 (修改為在最上層、半透明) === */
+/* === 回憶碎片背景 === */
 .memories-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    pointer-events: none; /* 絕對不阻礙滑鼠點擊或手指滑動 */
-    z-index: 999; /* 改成 999，確保飄落在信紙的「最前方」 */
+    pointer-events: none;
+    z-index: 999;
     overflow: hidden;
 }
 
 .memory-fragment {
     position: absolute;
     top: -200px;
-    width: 120px;
+    width: 130px;
     height: auto;
     border: 8px solid #ffffff;
-    border-bottom: 25px solid #ffffff; /* 仿拍立得的白邊底 */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-bottom: 25px solid #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     border-radius: 2px;
     opacity: 0;
     animation: drift linear forwards;
-    filter: sepia(0.2) contrast(0.9); /* 加上一點點復古溫暖濾鏡 */
+    filter: sepia(0.15) contrast(1.05); /* 讓相片更清晰且帶一點復古感 */
 }
 
-/* 碎片飄落與旋轉動畫 */
 @keyframes drift {
-    0% {
-        transform: translateY(-200px) rotate(var(--start-rot));
-        opacity: 0;
-    }
-    15% {
-        opacity: 0.55; /* 調為 0.55 半透明，既能看見照片，也能看透讀底下的字 */
-    }
-    85% {
-        opacity: 0.55;
-    }
-    100% {
-        transform: translateY(115vh) rotate(var(--end-rot));
-        opacity: 0;
-    }
+    0% { transform: translateY(-200px) rotate(var(--start-rot)); opacity: 0; }
+    10% { opacity: 0.95; } /* 因為在讀完信後才飄，所以可以讓相片非常清晰！ */
+    90% { opacity: 0.95; }
+    100% { transform: translateY(115vh) rotate(var(--end-rot)); opacity: 0; }
 }
 
 .stage {
@@ -69,7 +58,7 @@ html, body {
     z-index: 10;
 }
 
-/* === 復古質感信封設計 === */
+/* === 信封與信紙樣式 (維持不變) === */
 .envelope-wrapper {
     display: flex;
     flex-direction: column;
@@ -91,8 +80,6 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 0;
-    height: 0;
     border-left: 145px solid transparent;
     border-right: 145px solid transparent;
     border-top: 105px solid #d9cbba;
@@ -105,8 +92,6 @@ html, body {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0;
-    height: 0;
     border-left: 145px solid #d0c1ad;
     border-right: 145px solid #d0c1ad;
     border-bottom: 100px solid #c7b6a1;
@@ -132,38 +117,10 @@ html, body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.wax-seal:hover {
-    transform: translateX(-50%) scale(1.06);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(224, 186, 116, 0.8);
-}
-
-.seal-text {
-    color: #f4e8d1;
-    font-size: 20px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    font-family: serif;
-    user-select: none;
-}
-
-.hint-text {
-    margin-top: 28px;
-    font-size: 15px;
-    color: #8c827a;
-    letter-spacing: 2px;
-    user-select: none;
-}
-
-.open .flap {
-    transform: rotateX(180deg);
-    z-index: 1;
-}
-
-.open .wax-seal {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-}
+.seal-text { color: #f4e8d1; font-size: 20px; font-weight: bold; letter-spacing: 1px; font-family: serif; user-select: none; }
+.hint-text { margin-top: 28px; font-size: 15px; color: #8c827a; letter-spacing: 2px; user-select: none; }
+.open .flap { transform: rotateX(180deg); z-index: 1; }
+.open .wax-seal { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
 
 /* === 手寫信紙卡片 === */
 .letter-card {
@@ -186,21 +143,17 @@ html, body {
     box-shadow: 0 12px 40px rgba(54, 43, 34, 0.07);
     border: 1px solid #efe8dc;
     position: relative;
+    transition: opacity 1.5s ease, filter 1.5s ease; /* 為了後面的變暗特效準備 */
 }
 
-.date-stamp {
-    font-size: 14px;
-    color: #9c9188;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
+/* 觸發回憶後，信紙微微變暗退後的特效 */
+.paper-texture.dimmed {
+    opacity: 0.25;
+    filter: blur(2px);
 }
 
-.greeting {
-    font-size: 24px;
-    color: #2b2523;
-    margin-bottom: 24px;
-    font-weight: bold;
-}
+.date-stamp { font-size: 14px; color: #9c9188; letter-spacing: 2px; margin-bottom: 8px; }
+.greeting { font-size: 24px; color: #2b2523; margin-bottom: 24px; font-weight: bold; }
 
 .polaroid-frame {
     position: relative;
@@ -225,11 +178,7 @@ html, body {
     box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
-.polaroid-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
+.polaroid-img { width: 100%; height: auto; display: block; }
 
 .letter-body p {
     font-size: 18px;
@@ -242,45 +191,91 @@ html, body {
     white-space: normal;
 }
 
-.letter-body .ps {
-    font-size: 15.5px;
-    color: #8c827b;
-    margin-top: 25px;
+.letter-body .ps { font-size: 15.5px; color: #8c827b; margin-top: 25px; }
+.signature { margin-top: 40px; text-align: right; line-height: 1.5; }
+.signature .name { font-weight: bold; font-size: 19px; color: #2b2523; }
+
+/* === 手作紙條按鈕樣式 === */
+.memory-trigger-container {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 10px;
 }
 
-.signature {
-    margin-top: 40px;
-    text-align: right;
-    line-height: 1.5;
+.memory-btn {
+    background: #f1e7d5;
+    border: none;
+    color: #5a4b41;
+    font-family: 'LXGW WenKai TC', cursive, serif;
+    font-size: 17px;
+    padding: 12px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transform: rotate(-1.5deg);
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.5s ease;
+    position: relative;
+    border-radius: 2px;
 }
 
-.signature .name {
-    font-weight: bold;
-    font-size: 19px;
-    color: #2b2523;
+/* 上方的半透明紙膠帶裝飾 */
+.memory-btn::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(2deg);
+    width: 45px;
+    height: 18px;
+    background-color: rgba(243, 156, 18, 0.4);
+}
+
+.memory-btn:hover {
+    transform: rotate(0deg) scale(1.03);
 }
 
 /* === 手機端微調 === */
 @media (max-width: 480px) {
-    .paper-texture {
-        padding: 26px 18px;
-    }
-    .letter-body p {
-        font-size: 16.5px;
-        line-height: 1.75;
-        margin-bottom: 14px;
-    }
-    .greeting {
-        font-size: 21px;
-    }
-    .polaroid-frame {
-        width: 100%;
-        max-width: 210px;
-    }
-    /* 手機螢幕較小，記憶碎片縮得更小一點，避免遮擋太多文字 */
-    .memory-fragment {
-        width: 80px;
-        border-width: 4px;
-        border-bottom-width: 14px;
+    .paper-texture { padding: 26px 18px; }
+    .letter-body p { font-size: 16.5px; line-height: 1.75; margin-bottom: 14px; }
+    .greeting { font-size: 21px; }
+    .polaroid-frame { width: 100%; max-width: 210px; }
+    .memory-fragment { width: 95px; border-width: 6px; border-bottom-width: 18px; }
+    .memory-btn { font-size: 16px; padding: 10px 18px; }
+}
+
+/* === 回憶畫面中央浮現的專屬文字 === */
+.memory-text-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 998; /* 在變暗的信紙上方，但跟照片同一層 */
+    text-align: center;
+    opacity: 0;
+    pointer-events: none; /* 絕對不阻擋手勢 */
+    transition: opacity 2s ease; /* 2秒緩緩浮現，非常有質感 */
+}
+
+/* 透過 JS 加上這個 class 來顯示文字 */
+.memory-text-overlay.show {
+    opacity: 1;
+}
+
+.memory-text-overlay p {
+    font-family: 'LXGW WenKai TC', cursive, serif;
+    font-size: 26px;
+    color: #fffdf5; /* 溫暖的奶油白 */
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.45); /* 加上陰影，字在暗背景中會很有立體感 */
+    letter-spacing: 2.5px;
+    white-space: nowrap; /* 強制不換行 */
+}
+
+/* === 手機端文字大小微調 === */
+@media (max-width: 480px) {
+    .memory-text-overlay p {
+        font-size: 19px;
+        white-space: normal; /* 手機螢幕窄，允許自動換行 */
+        line-height: 1.6;
+        padding: 0 20px;
     }
 }
